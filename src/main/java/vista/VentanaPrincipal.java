@@ -3,15 +3,20 @@ package vista;
 import controlador.ControladorBotones;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.util.Vector;
 
-public class PanelPrincipal extends JFrame {
+public class VentanaPrincipal extends JFrame {
 
+    private JPanel panelPrincipal, panelCabecera, panelJuego, panelTablaGeneral, panelSimulacionJuego;
     private ControladorBotones controladorBotones;
     private JButton botonInfo, botonEmpezarPartida;
-    private JLabel infoCabecera, tituloTablaGeneral, tituloTablaIndividual, nPartida;
+    private JLabel infoCabecera, tituloTablaGeneral, tituloTablaIndividual, nPartida, tokioDriftIcon;
+    private ClasificacionPanel clasificacionPanel;
+    private ImageIcon imageIcon;
 
-    public PanelPrincipal(){
+    public VentanaPrincipal(){
         inicializarBotones();
         inicializarLabels();
         configPaneles();
@@ -24,12 +29,12 @@ public class PanelPrincipal extends JFrame {
         setSize(1280, 720);
 
         //Panel principal
-        JPanel panelPrincipal = new JPanel();
+        this.panelPrincipal = new JPanel();
         panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.Y_AXIS));
         panelPrincipal.setBackground(new Color(253,202,225));
 
         //Panel cabecera
-        JPanel panelCabecera = new JPanel(new FlowLayout(FlowLayout.LEADING));
+        this.panelCabecera = new JPanel(new FlowLayout(FlowLayout.LEADING));
         panelCabecera.setBackground(new Color(21,171,146));
         panelCabecera.setPreferredSize(new Dimension(1280, 40));
         panelCabecera.add(botonInfo);
@@ -37,18 +42,22 @@ public class PanelPrincipal extends JFrame {
         panelCabecera.add(infoCabecera);
 
         //Panel juego
-        JPanel panelJuego = new JPanel(new BorderLayout());
+        this.panelJuego = new JPanel(new BorderLayout());
 
         //Panel tabla de clasificicacion general
-        JPanel panelTablaGeneral = new JPanel();
+        this.panelTablaGeneral = new JPanel();
         panelTablaGeneral.setPreferredSize(new Dimension(300, 0));
         panelTablaGeneral.setBackground(new Color(204,153,255));
 
+        //Agregar a panel tabla general
+        this.clasificacionPanel = new ClasificacionPanel();
+        this.panelTablaGeneral.add(clasificacionPanel, BorderLayout.CENTER);
+        this.panelTablaGeneral.add(tokioDriftIcon, BorderLayout.CENTER);
+
         //Panel simulador juego
-        JPanel panelSimulacionJuego = new JPanel();
+        this.panelSimulacionJuego = new JPanel();
         panelSimulacionJuego.setLayout(new BoxLayout(panelSimulacionJuego, BoxLayout.Y_AXIS));
         panelSimulacionJuego.setBackground( new Color(204, 255, 229));
-
 
         //Agragar al panel de juego
         panelJuego.add(panelTablaGeneral, BorderLayout.WEST);
@@ -64,13 +73,36 @@ public class PanelPrincipal extends JFrame {
         setVisible(true);
     }
 
+    public void ClasificacionPanel() {}
+
+
     public void inicializarBotones(){
+        //Boton que va a llevar a la seccion de informacion de los jugadores
         this.botonInfo = new JButton("Jugadores");
         botonInfo.setBackground(new Color(129,201,250));
+
+        //Boton que va a iniciar la simulacion
+        this.botonEmpezarPartida = new JButton("Empezar");
+        botonEmpezarPartida.setBackground(new Color(129,201,250));
+
+
     }
     public void inicializarLabels(){
-
+        //Label cabecera
         this.infoCabecera = new JLabel("Bienvenido a Rapidos y furiosos");
+        //Label numero de partida
+        this.nPartida = new JLabel("Estas en la partida numero:");
+        //Label Titulo tabla de clasisicacion
+        this.tituloTablaGeneral = new JLabel("Clasificacion general");
+
+        //Imagen
+        this.tokioDriftIcon = new JLabel();
+        this.imageIcon = new ImageIcon(getClass().getResource("/img/TokioDrift.png"));
+        int maxWidth = 200;
+        int maxHeight = 200;
+        Image scaledImage = imageIcon.getImage().getScaledInstance(maxWidth, maxHeight, Image.SCALE_SMOOTH);
+        this.imageIcon = new ImageIcon(scaledImage);
+        this.tokioDriftIcon.setIcon(imageIcon);
 
     }
 
@@ -121,4 +153,5 @@ public class PanelPrincipal extends JFrame {
     public void setnPartida(JLabel nPartida) {
         this.nPartida = nPartida;
     }
+
 }

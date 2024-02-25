@@ -1,5 +1,6 @@
 package Logica;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.BrokenBarrierException;
@@ -26,8 +27,11 @@ public class HoraSegunUbicacion extends Thread {
     }
 
     private String obtenerHoraFicticia() {
-        ZoneId zonaHoraria = ZoneId.of(jugador.getUbicacion());
-        return LocalDateTime.now(zonaHoraria).format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+        ZoneId berlinZone = ZoneId.of(jugador.getUbicacion());
+        LocalTime romeTime = LocalTime.now(berlinZone);
+        return ""+romeTime;
+//        ZoneId zonaHoraria = ZoneId.of(jugador.getUbicacion());
+//        return LocalDateTime.now(zonaHoraria).format(DateTimeFormatter.ofPattern("HH:mm:ss"));
     }
 
     @Override
@@ -49,4 +53,5 @@ public class HoraSegunUbicacion extends Thread {
             }
         }
     }
+
 }
