@@ -1,12 +1,10 @@
 package vista;
 
-import Logica.Configuracion;
 import Logica.Jugador;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Vector;
 
 public class ClasificacionPanel extends JPanel {
@@ -27,9 +25,9 @@ public class ClasificacionPanel extends JPanel {
 
         // Configurar apariencia de la tabla
         table.setRowHeight(30);
-        table.setGridColor(new Color(204,153,255));
+        table.setGridColor(new Color(255,204,0));
         table.setIntercellSpacing(new Dimension(10, 10));
-        table.getTableHeader().setBackground(new Color(204,153,255));
+        table.getTableHeader().setBackground(new Color(255,204,0));
         table.getTableHeader().setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
 
         add(table.getTableHeader(), BorderLayout.PAGE_START);
@@ -46,7 +44,6 @@ public class ClasificacionPanel extends JPanel {
     }
     public void traerjugadores(Jugador[] jugadoress ){
         this.jugadores = jugadoress;
-
     }
     private void agregarJugador(String nombre, int puntaje) {
         Vector<Object> row = new Vector<>();

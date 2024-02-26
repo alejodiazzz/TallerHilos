@@ -4,6 +4,7 @@ import Logica.*;
 import controlador.ControladorBotones;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.Vector;
@@ -16,6 +17,8 @@ public class VentanaPrincipal extends JFrame {
     private JButton botonInfo, botonEmpezarPartida;
     private JLabel infoCabecera, tituloTablaGeneral, tituloTablaIndividual, nPartida, tokioDriftIcon;
     private ClasificacionPanel clasificacionPanel;
+    private InfoPanel infoPanel;
+    private SimulacionPanel simulacionPanel;
     private ImageIcon imageIcon;
 
     public VentanaPrincipal(){
@@ -37,8 +40,10 @@ public class VentanaPrincipal extends JFrame {
 
         //Panel cabecera
         this.panelCabecera = new JPanel(new FlowLayout(FlowLayout.LEADING));
-        panelCabecera.setBackground(new Color(21,171,146));
+        panelCabecera.setBackground(new Color(204,204,204));
         panelCabecera.setPreferredSize(new Dimension(1280, 40));
+        Border bordeColor = BorderFactory.createLineBorder(new Color(255, 255, 255));
+        panelCabecera.setBorder(bordeColor);
         panelCabecera.add(botonInfo);
         panelCabecera.add(Box.createHorizontalStrut(600));
         panelCabecera.add(infoCabecera);
@@ -49,7 +54,7 @@ public class VentanaPrincipal extends JFrame {
         //Panel tabla de clasificicacion general
         this.panelTablaGeneral = new JPanel();
         panelTablaGeneral.setPreferredSize(new Dimension(300, 0));
-        panelTablaGeneral.setBackground(new Color(204,153,255));
+        panelTablaGeneral.setBackground(new Color(204,204,204));
 
         //Agregar a panel tabla general
         this.clasificacionPanel = new ClasificacionPanel();
@@ -58,8 +63,16 @@ public class VentanaPrincipal extends JFrame {
 
         //Panel simulador juego
         this.panelSimulacionJuego = new JPanel();
-        panelSimulacionJuego.setLayout(new BoxLayout(panelSimulacionJuego, BoxLayout.Y_AXIS));
+        panelSimulacionJuego.setLayout(new BoxLayout(panelSimulacionJuego, BoxLayout.X_AXIS));
         panelSimulacionJuego.setBackground( new Color(204, 255, 229));
+
+        //Agrego la configuracion de la simulacion
+        this.simulacionPanel = new SimulacionPanel();
+        panelSimulacionJuego.add(simulacionPanel);
+
+        //Agrego al panel principal de juego la info de jugadores
+        this.infoPanel = new InfoPanel();
+        panelSimulacionJuego.add(infoPanel);
 
         //Agragar al panel de juego
         panelJuego.add(panelTablaGeneral, BorderLayout.WEST);
@@ -81,7 +94,7 @@ public class VentanaPrincipal extends JFrame {
     public void inicializarBotones(){
         //Boton que va a llevar a la seccion de informacion de los jugadores
         this.botonInfo = new JButton("Jugadores");
-        botonInfo.setBackground(new Color(129,201,250));
+        botonInfo.setBackground(new Color(51,153,255));
 
         //Boton que va a iniciar la simulacion
         this.botonEmpezarPartida = new JButton("Empezar");

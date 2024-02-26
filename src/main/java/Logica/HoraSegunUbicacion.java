@@ -27,8 +27,8 @@ public class HoraSegunUbicacion extends Thread {
     }
 
     private String obtenerHoraFicticia() {
-        ZoneId berlinZone = ZoneId.of(jugador.getUbicacion());
-        LocalTime romeTime = LocalTime.now(berlinZone);
+        ZoneId zone = ZoneId.of(jugador.getUbicacion());
+        LocalTime romeTime = LocalTime.now(zone);
         return ""+romeTime;
 //        ZoneId zonaHoraria = ZoneId.of(jugador.getUbicacion());
 //        return LocalDateTime.now(zonaHoraria).format(DateTimeFormatter.ofPattern("HH:mm:ss"));
