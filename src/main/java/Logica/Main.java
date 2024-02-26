@@ -18,41 +18,50 @@ public class Main {
             jugadores[i] = new Jugador(nombre, ubicacion, velocidad);
         }
 
-        // Crear e iniciar hilos de Partida y HoraSegunUbicacion para cada jugador
-        CyclicBarrier inicioPartidaBarrier = new CyclicBarrier(jugadores.length);
+        // Repetir la partida 5 veces
+        for (int repeticion = 1; repeticion <= 5; repeticion++) {
+            System.out.println("Repetición " + repeticion);
 
-        Thread[] hilosPartida = new Thread[jugadores.length];
-        Thread[] hilosHora = new Thread[jugadores.length];
+            // Crear e iniciar hilos de Partida y HoraSegunUbicacion para cada jugador
+            CyclicBarrier inicioPartidaBarrier = new CyclicBarrier(jugadores.length);
+            Thread[] hilosPartida = new Thread[jugadores.length];
+            Thread[] hilosHora = new Thread[jugadores.length];
 
-        for (int i = 0; i < jugadores.length; i++) {
-            hilosPartida[i] = new Partida(jugadores[i], inicioPartidaBarrier);
-            hilosHora[i] = new HoraSegunUbicacion(jugadores[i], inicioPartidaBarrier);
-
-            hilosPartida[i].start();
-            hilosHora[i].start();
-        }
-        // Esperar a que ambos hilos terminen
-        try {
-            for (Thread hiloPartida : hilosPartida) {
-                hiloPartida.join();
+            for (int i = 0; i < jugadores.length; i++) {
+                jugadores[i].reiniciar(); // Reiniciar datos del jugador para una nueva partida
+                hilosPartida[i] = new Partida(jugadores[i], inicioPartidaBarrier);
+                hilosHora[i] = new HoraSegunUbicacion(jugadores[i], inicioPartidaBarrier);
             }
 
-            // Detener los hilos de HoraSegunUbicacion después de las partidas
-            for (Thread hiloHora : hilosHora) {
-                hiloHora.interrupt();
+            // Iniciar hilos de Partida y HoraSegunUbicacion
+            for (int i = 0; i < jugadores.length; i++) {
+                hilosPartida[i].start();
+                hilosHora[i].start();
             }
-        } catch (InterruptedException e) {
-            System.err.println("Error al esperar a que los hilos de partida terminen: " + e.getMessage());
-        }
 
-        // Visualizar la clasificación al final
-        CalcularPosicion calculadorPosicion = new CalcularPosicion();
-        calculadorPosicion.ordenarJugadoresPorPuntajeYPartida(jugadores);
+            // Esperar a que ambos hilos terminen
+            try {
+                for (Thread hiloPartida : hilosPartida) {
+                    hiloPartida.join();
+                }
 
-        System.out.println("\nClasificación Final:");
-        for (Jugador jugador : jugadores) {
-            System.out.println("Posición: " + jugador.getPosicion() + ". Jugador: " + jugador.getNombre() +
-                    " - Partidas: " + jugador.getNumeroPartida() + " - Lanzamientos: " + jugador.getLanzamientos());
+                // Detener los hilos de HoraSegunUbicacion después de las partidas
+                for (Thread hiloHora : hilosHora) {
+                    hiloHora.interrupt();
+                }
+            } catch (InterruptedException e) {
+                System.err.println("Error al esperar a que los hilos de partida terminen: " + e.getMessage());
+            }
+
+            // Visualizar la clasificación al final
+            CalcularPosicion calculadorPosicion = new CalcularPosicion();
+            calculadorPosicion.ordenarJugadoresPorPuntajeYPartida(jugadores);
+            CalcularPuntajeGeneral.calcularPuntajeGeneral(jugadores);
+            System.out.println("\nClasificación Final:");
+            for (Jugador jugador : jugadores) {
+                System.out.println("Posición: " + jugador.getPosicion() + ". Jugador: " + jugador.getNombre() +
+                        " - Partidas: " + jugador.getNumeroPartida() + " - Lanzamientos: " + jugador.getLanzamientos());
+            }
         }
     }
 }

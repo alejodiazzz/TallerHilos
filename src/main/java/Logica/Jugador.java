@@ -5,6 +5,16 @@ public class Jugador {
     private String nombre;
     private String ubicacion;
     private int numeroPartida;
+
+    public int getPuntajeGeneral() {
+        return puntajeGeneral;
+    }
+
+    public void setPuntajeGeneral(int puntajeGeneral) {
+        this.puntajeGeneral = puntajeGeneral;
+    }
+
+    private int puntajeGeneral;
     private int puntaje;
     private int velocidad;
     private volatile boolean juegoTerminado;
@@ -14,12 +24,15 @@ public class Jugador {
     public Jugador(String nombre, String ubicacion, int velocidad) {
         this.nombre = nombre;
         this.ubicacion = ubicacion;
-        this.numeroPartida = 1;
+        this.numeroPartida = 0;
         this.puntaje = 0;
         this.velocidad = velocidad;
         this.juegoTerminado = false;
         this.hiloHora = null;
         this.lanzamientos = 0;
+        this.puntajeGeneral = 0;
+        realizarLanzamiento();
+
     }
     public int getLanzamientos() {
         return lanzamientos;
@@ -43,7 +56,9 @@ public class Jugador {
         return puntaje;
     }
 
-
+    public void actualizarPartida(){
+        numeroPartida++;
+    }
     public void realizarLanzamiento() {
         CalcularPuntaje.calcularPuntaje(this);
     }
@@ -82,6 +97,26 @@ public class Jugador {
         if (hiloHora != null && hiloHora.isAlive()) {
             hiloHora.detenerJuego();
             hiloHora.interrupt();
+
         }
+    }
+    public void reiniciar() {
+        // Reiniciar los datos del jugador para una nueva partida
+        this.setPosicion(0);
+        this.setPuntaje(0);
+        this.setLanzamientos(0);
+        this.juegoTerminado = false;
+        actualizarPartida();
+
+    }
+
+
+    private void setLanzamientos(int i) {
+        this.lanzamientos = i;
+    }
+
+    public void sumarPuntajeGeneral(int puntajePartida) {
+        puntajeGeneral = puntajePartida+puntajeGeneral;
+
     }
 }

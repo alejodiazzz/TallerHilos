@@ -1,15 +1,18 @@
 package vista;
 
+import Logica.Configuracion;
 import Logica.Jugador;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Vector;
 
 public class ClasificacionPanel extends JPanel {
     private DefaultTableModel tableModel;
     private JTable table;
+    private Jugador[] jugadores;
 
     public ClasificacionPanel() {
         setLayout(new BorderLayout());
@@ -32,6 +35,8 @@ public class ClasificacionPanel extends JPanel {
         add(table.getTableHeader(), BorderLayout.PAGE_START);
         add(table, BorderLayout.CENTER);
 
+        jugadores = new Jugador[5];
+
         //Valores precargados, hay que traer los datos del archivo
         agregarJugador("Toreto", 34);
         agregarJugador("Lisa", 89);
@@ -39,7 +44,10 @@ public class ClasificacionPanel extends JPanel {
         agregarJugador("Han", 23);
         agregarJugador("Random", 856);
     }
+    public void traerjugadores(Jugador[] jugadoress ){
+        this.jugadores = jugadoress;
 
+    }
     private void agregarJugador(String nombre, int puntaje) {
         Vector<Object> row = new Vector<>();
         row.add(nombre);
@@ -47,13 +55,20 @@ public class ClasificacionPanel extends JPanel {
         tableModel.addRow(row);
     }
 
-    public void actualizarTabla(Jugador[] jugadores) {
+    public void actualizarTabla() {
         tableModel.setRowCount(0);
         for (Jugador jugador : jugadores) {
-            agregarJugador(jugador.getNombre(), jugador.getPuntaje());
+            if (jugador != null) {
+                agregarJugador(jugador.getNombre(), jugador.getPuntajeGeneral());
+            }
         }
     }
-
+    public Jugador[] getJugadores() {
+        return jugadores;
+    }
+    public void agregarJugador(int indice, Jugador jugador) {
+        jugadores[indice] = jugador;
+    }
     @Override
     public Dimension getPreferredSize() {
         return new Dimension(300, super.getPreferredSize().height);
