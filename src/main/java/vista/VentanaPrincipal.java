@@ -1,14 +1,11 @@
 package vista;
 
-import Logica.*;
 import controlador.ControladorBotones;
+import controlador.ControladorJugadores;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.util.Vector;
-import java.util.concurrent.CyclicBarrier;
 
 public class VentanaPrincipal extends JFrame {
 
@@ -20,8 +17,10 @@ public class VentanaPrincipal extends JFrame {
     private InfoPanel infoPanel;
     private SimulacionPanel simulacionPanel;
     private ImageIcon imageIcon;
+    private ControladorJugadores controladorJugadores;
 
     public VentanaPrincipal(){
+        this.controladorJugadores = new ControladorJugadores();
         inicializarBotones();
         inicializarLabels();
         configPaneles();
@@ -57,9 +56,12 @@ public class VentanaPrincipal extends JFrame {
         panelTablaGeneral.setBackground(new Color(204,204,204));
 
         //Agregar a panel tabla general
-        this.clasificacionPanel = new ClasificacionPanel();
-        this.panelTablaGeneral.add(clasificacionPanel, BorderLayout.CENTER);
+        //this.clasificacionPanel = new ClasificacionPanel();
+        this.clasificacionPanel = controladorJugadores.getClasificacionGeneral();
+        this.panelTablaGeneral.add(clasificacionPanel, BorderLayout.NORTH);
         this.panelTablaGeneral.add(tokioDriftIcon, BorderLayout.CENTER);
+        this.panelTablaGeneral.add(botonEmpezarPartida, BorderLayout.CENTER);///ENfocate en esta linea, como hago que se haga abajo de la imagen, asi como esta se hace a un lado
+
 
         //Panel simulador juego
         this.panelSimulacionJuego = new JPanel();
@@ -67,11 +69,13 @@ public class VentanaPrincipal extends JFrame {
         panelSimulacionJuego.setBackground( new Color(204, 255, 229));
 
         //Agrego la configuracion de la simulacion
-        this.simulacionPanel = new SimulacionPanel();
+        //this.simulacionPanel = new SimulacionPanel();
+        this.simulacionPanel = controladorJugadores.getSimulacionPanel();
         panelSimulacionJuego.add(simulacionPanel);
 
         //Agrego al panel principal de juego la info de jugadores
-        this.infoPanel = new InfoPanel();
+        //this.infoPanel = new InfoPanel();
+        this.infoPanel = controladorJugadores.getInfoPanel();
         panelSimulacionJuego.add(infoPanel);
 
         //Agragar al panel de juego
@@ -87,9 +91,6 @@ public class VentanaPrincipal extends JFrame {
 
         setVisible(true);
     }
-
-    public void ClasificacionPanel() {}
-
 
     public void inicializarBotones(){
         //Boton que va a llevar a la seccion de informacion de los jugadores
@@ -169,61 +170,144 @@ public class VentanaPrincipal extends JFrame {
         this.nPartida = nPartida;
     }
 
-    public void iniciarSimulacion(Jugador[] jugadores) {
-
-        clasificacionPanel.traerjugadores(jugadores);
-       // Repetir la partida 5 veces
-        for (int repeticion = 1; repeticion <= 5; repeticion++) {
-            System.out.println("Repetición " + repeticion);
-
-            // Crear e iniciar hilos de Partida y HoraSegunUbicacion para cada jugador
-            CyclicBarrier inicioPartidaBarrier = new CyclicBarrier(jugadores.length);
-            Thread[] hilosPartida = new Thread[jugadores.length];
-            Thread[] hilosHora = new Thread[jugadores.length];
-
-            for (int i = 0; i < jugadores.length; i++) {
-                jugadores[i].reiniciar(); // Reiniciar datos del jugador para una nueva partida
-                hilosPartida[i] = new Partida(jugadores[i], inicioPartidaBarrier);
-                hilosHora[i] = new HoraSegunUbicacion(jugadores[i], inicioPartidaBarrier);
-            }
-
-            // Iniciar hilos de Partida y HoraSegunUbicacion
-            for (int i = 0; i < jugadores.length; i++) {
-                hilosPartida[i].start();
-                hilosHora[i].start();
-            }
-
-            // Esperar a que ambos hilos terminen
-            try {
-                for (Thread hiloPartida : hilosPartida) {
-                    hiloPartida.join();
-                }
-
-                // Detener los hilos de HoraSegunUbicacion después de las partidas
-                for (Thread hiloHora : hilosHora) {
-                    hiloHora.interrupt();
-                }
-            } catch (InterruptedException e) {
-                System.err.println("Error al esperar a que los hilos de partida terminen: " + e.getMessage());
-            }
-
-            // Visualizar la clasificación al final
-            CalcularPosicion calculadorPosicion = new CalcularPosicion();
-            calculadorPosicion.ordenarJugadoresPorPuntajeYPartida(jugadores);
-            CalcularPuntajeGeneral.calcularPuntajeGeneral(jugadores);
-            clasificacionPanel.actualizarTabla();
-            System.out.println("\nClasificación Final:");
-            for (Jugador jugador : jugadores) {
-                System.out.println("Posición: " + jugador.getPosicion() + ". Jugador: " + jugador.getNombre() +
-                        " - Partidas: " + jugador.getNumeroPartida() + " - Lanzamientos: " + jugador.getLanzamientos());
-            }
-        }
-
-        // También realizar otras actualizaciones en la interfaz según sea necesario.
-        // Por ejemplo, mostrar mensajes, actualizar etiquetas, etc.
-    }
+//    public void iniciarSimulacion(Jugador[] jugadores) {
+//
+//        clasificacionPanel.traerjugadores(jugadores);
+//       // Repetir la partida 5 veces
+//        for (int repeticion = 1; repeticion <= 5; repeticion++) {
+//            System.out.println("Repetición " + repeticion);
+//
+//            // Crear e iniciar hilos de Partida y HoraSegunUbicacion para cada jugador
+//            CyclicBarrier inicioPartidaBarrier = new CyclicBarrier(jugadores.length);
+//            Thread[] hilosPartida = new Thread[jugadores.length];
+//            Thread[] hilosHora = new Thread[jugadores.length];
+//
+//            for (int i = 0; i < jugadores.length; i++) {
+//                jugadores[i].reiniciar(); // Reiniciar datos del jugador para una nueva partida
+//                hilosPartida[i] = new Partida(jugadores[i], inicioPartidaBarrier);
+//                hilosHora[i] = new HoraSegunUbicacion(jugadores[i], inicioPartidaBarrier);
+//            }
+//
+//            // Iniciar hilos de Partida y HoraSegunUbicacion
+//            for (int i = 0; i < jugadores.length; i++) {
+//                hilosPartida[i].start();
+//                hilosHora[i].start();
+//            }
+//
+//            // Esperar a que ambos hilos terminen
+//            try {
+//                for (Thread hiloPartida : hilosPartida) {
+//                    hiloPartida.join();
+//                }
+//
+//                // Detener los hilos de HoraSegunUbicacion después de las partidas
+//                for (Thread hiloHora : hilosHora) {
+//                    hiloHora.interrupt();
+//                }
+//            } catch (InterruptedException e) {
+//                System.err.println("Error al esperar a que los hilos de partida terminen: " + e.getMessage());
+//            }
+//
+//            // Visualizar la clasificación al final
+//            CalcularPosicion calculadorPosicion = new CalcularPosicion();
+//            calculadorPosicion.ordenarJugadoresPorPuntajeYPartida(jugadores);
+//            CalcularPuntajeGeneral.calcularPuntajeGeneral(jugadores);
+//            clasificacionPanel.actualizarTabla();
+//            System.out.println("\nClasificación Final:");
+//            for (Jugador jugador : jugadores) {
+//                System.out.println("Posición: " + jugador.getPosicion() + ". Jugador: " + jugador.getNombre() +
+//                        " - Partidas: " + jugador.getNumeroPartida() + " - Lanzamientos: " + jugador.getLanzamientos());
+//            }
+//        }
+//
+//        // También realizar otras actualizaciones en la interfaz según sea necesario.
+//        // Por ejemplo, mostrar mensajes, actualizar etiquetas, etc.
+//    }
     public ClasificacionPanel getClasificacionPanel() {
         return clasificacionPanel;
     }
 
+    public JPanel getPanelPrincipal() {
+        return panelPrincipal;
+    }
+
+    public void setPanelPrincipal(JPanel panelPrincipal) {
+        this.panelPrincipal = panelPrincipal;
+    }
+
+    public JPanel getPanelCabecera() {
+        return panelCabecera;
+    }
+
+    public void setPanelCabecera(JPanel panelCabecera) {
+        this.panelCabecera = panelCabecera;
+    }
+
+    public JPanel getPanelJuego() {
+        return panelJuego;
+    }
+
+    public void setPanelJuego(JPanel panelJuego) {
+        this.panelJuego = panelJuego;
+    }
+
+    public JPanel getPanelTablaGeneral() {
+        return panelTablaGeneral;
+    }
+
+    public void setPanelTablaGeneral(JPanel panelTablaGeneral) {
+        this.panelTablaGeneral = panelTablaGeneral;
+    }
+
+    public JPanel getPanelSimulacionJuego() {
+        return panelSimulacionJuego;
+    }
+
+    public void setPanelSimulacionJuego(JPanel panelSimulacionJuego) {
+        this.panelSimulacionJuego = panelSimulacionJuego;
+    }
+
+    public ControladorBotones getControladorBotones() {
+        return controladorBotones;
+    }
+
+    public void setControladorBotones(ControladorBotones controladorBotones) {
+        this.controladorBotones = controladorBotones;
+    }
+
+    public JLabel getTokioDriftIcon() {
+        return tokioDriftIcon;
+    }
+
+    public void setTokioDriftIcon(JLabel tokioDriftIcon) {
+        this.tokioDriftIcon = tokioDriftIcon;
+    }
+
+    public void setClasificacionPanel(ClasificacionPanel clasificacionPanel) {
+        this.clasificacionPanel = clasificacionPanel;
+    }
+
+    public InfoPanel getInfoPanel() {
+        return infoPanel;
+    }
+
+    public void setInfoPanel(InfoPanel infoPanel) {
+        this.infoPanel = infoPanel;
+    }
+
+    public SimulacionPanel getSimulacionPanel() {
+        return simulacionPanel;
+    }
+
+    public void setSimulacionPanel(SimulacionPanel simulacionPanel) {
+        this.simulacionPanel = simulacionPanel;
+    }
+
+    public ImageIcon getImageIcon() {
+        return imageIcon;
+    }
+
+    public void setImageIcon(ImageIcon imageIcon) {
+        this.imageIcon = imageIcon;
+    }
 }

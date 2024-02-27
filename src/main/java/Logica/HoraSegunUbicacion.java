@@ -1,4 +1,5 @@
 package Logica;
+import javax.swing.*;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -10,8 +11,8 @@ public class HoraSegunUbicacion extends Thread {
     private Jugador jugador;
     private CyclicBarrier inicioPartidaBarrier;  // Sincronización del inicio de la partida
     private volatile boolean juegoTerminado = false;
-
-    private static final int ACTUALIZACION_HORA_INTERVALO = 5000;
+    private JTextArea textArea = null;
+    private static final int ACTUALIZACION_HORA_INTERVALO = 1000;
 
     public HoraSegunUbicacion(Jugador jugador, CyclicBarrier inicioPartidaBarrier) {
         this.jugador = jugador;
@@ -22,11 +23,7 @@ public class HoraSegunUbicacion extends Thread {
         juegoTerminado = true;
     }
 
-    private void mostrarHora() {
-        System.out.println("Hora según la ubicación de " + jugador.getNombre() + ": " + obtenerHoraFicticia());
-    }
-
-    private String obtenerHoraFicticia() {
+    private String obtenerHora() {
         ZoneId zone = ZoneId.of(jugador.getUbicacion());
         LocalTime romeTime = LocalTime.now(zone);
         return ""+romeTime;
@@ -45,7 +42,7 @@ public class HoraSegunUbicacion extends Thread {
         }
 
         while (!juegoTerminado && !Thread.currentThread().isInterrupted()) {
-            mostrarHora();
+            textArea.setText(obtenerHora());
             try {
                 Thread.sleep(ACTUALIZACION_HORA_INTERVALO);
             } catch (InterruptedException e) {
@@ -54,4 +51,11 @@ public class HoraSegunUbicacion extends Thread {
         }
     }
 
+    public JTextArea getTextArea() {
+        return textArea;
+    }
+
+    public void setTextArea(JTextArea textArea) {
+        this.textArea = textArea;
+    }
 }

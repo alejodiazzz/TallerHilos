@@ -1,19 +1,13 @@
 package Logica;
 
+import javax.swing.*;
+import java.util.concurrent.CyclicBarrier;
+
 public class Jugador {
     private int posicion;
     private String nombre;
     private String ubicacion;
     private int numeroPartida;
-
-    public int getPuntajeGeneral() {
-        return puntajeGeneral;
-    }
-
-    public void setPuntajeGeneral(int puntajeGeneral) {
-        this.puntajeGeneral = puntajeGeneral;
-    }
-
     private int puntajeGeneral;
     private int puntaje;
     private int velocidad;
@@ -21,18 +15,17 @@ public class Jugador {
     private int lanzamientos;
     private HoraSegunUbicacion hiloHora;  // Referencia al hilo de HoraSegunUbicacion asociado al jugador
 
-    public Jugador(String nombre, String ubicacion, int velocidad) {
+    public Jugador(String nombre, String ubicacion, int velocidad, CyclicBarrier cyclicBarrier) {
         this.nombre = nombre;
         this.ubicacion = ubicacion;
         this.numeroPartida = 0;
         this.puntaje = 0;
         this.velocidad = velocidad;
         this.juegoTerminado = false;
-        this.hiloHora = null;
+        this.hiloHora = new HoraSegunUbicacion(this, cyclicBarrier);
         this.lanzamientos = 0;
         this.puntajeGeneral = 0;
-        realizarLanzamiento();
-
+        //realizarLanzamiento();
     }
     public int getLanzamientos() {
         return lanzamientos;
@@ -109,8 +102,6 @@ public class Jugador {
         actualizarPartida();
 
     }
-
-
     private void setLanzamientos(int i) {
         this.lanzamientos = i;
     }
@@ -118,5 +109,17 @@ public class Jugador {
     public void sumarPuntajeGeneral(int puntajePartida) {
         puntajeGeneral = puntajePartida+puntajeGeneral;
 
+    }
+    public int getPuntajeGeneral() {
+        return puntajeGeneral;
+    }
+
+    public void setPuntajeGeneral(int puntajeGeneral) {
+        this.puntajeGeneral = puntajeGeneral;
+    }
+
+    public HoraSegunUbicacion getHiloHora(JTextArea textArea) {
+        hiloHora.setTextArea(textArea);
+        return hiloHora;
     }
 }

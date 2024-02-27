@@ -14,27 +14,23 @@ public class JugadorPanel extends JPanel {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         this.nombre = new JLabel();
-        nombre.setText("alberto");
         this.nombre.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(nombre, BorderLayout.NORTH);
 
         this.lanzamiento = new JLabel();
         this.faltantes = new JLabel();
-        setLanzamiento("2","14", "78");
         this.lanzamiento.setAlignmentX(Component.CENTER_ALIGNMENT);
         this.faltantes.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(lanzamiento, BorderLayout.SOUTH);
         add(faltantes, BorderLayout.SOUTH);
 
         this.reloj = new JTextArea();
-        setReloj("10;34");
         reloj.setEditable(false);
         this.reloj.setAlignmentX(Component.CENTER_ALIGNMENT);
         this.reloj.setPreferredSize(new Dimension(200, 50));
         add(reloj);
 
         this.hora = new JLabel();
-        setHora("Europe/madrid");
         this.hora.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(hora, BorderLayout.CENTER);
 

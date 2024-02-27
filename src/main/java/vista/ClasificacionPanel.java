@@ -1,6 +1,7 @@
 package vista;
 
 import Logica.Jugador;
+import controlador.ControladorJugadores;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -10,9 +11,14 @@ import java.util.Vector;
 public class ClasificacionPanel extends JPanel {
     private DefaultTableModel tableModel;
     private JTable table;
-    private Jugador[] jugadores;
+    private ControladorJugadores controladorJugadores;
+    private boolean esTablaGeneral;
 
-    public ClasificacionPanel() {
+    public ClasificacionPanel(ControladorJugadores controladorJugadores, boolean esGeneral) {
+
+        this.controladorJugadores = controladorJugadores;
+        this.esTablaGeneral = esGeneral;
+
         setLayout(new BorderLayout());
 
         // Crear el modelo de la tabla con las columnas
@@ -33,17 +39,8 @@ public class ClasificacionPanel extends JPanel {
         add(table.getTableHeader(), BorderLayout.PAGE_START);
         add(table, BorderLayout.CENTER);
 
-        jugadores = new Jugador[5];
-
-        //Valores precargados, hay que traer los datos del archivo
-        agregarJugador("Toreto", 34);
-        agregarJugador("Lisa", 89);
-        agregarJugador("Mauro", 324);
-        agregarJugador("Han", 23);
-        agregarJugador("Random", 856);
-    }
-    public void traerjugadores(Jugador[] jugadoress ){
-        this.jugadores = jugadoress;
+        //Precarga los datos de las dos tablas
+        actualizarTabla(controladorJugadores.getJugadores());
     }
     private void agregarJugador(String nombre, int puntaje) {
         Vector<Object> row = new Vector<>();
@@ -52,20 +49,26 @@ public class ClasificacionPanel extends JPanel {
         tableModel.addRow(row);
     }
 
-    public void actualizarTabla() {
+    public void actualizarTabla(Jugador[] jugadores) {
         tableModel.setRowCount(0);
-        for (Jugador jugador : jugadores) {
-            if (jugador != null) {
-                agregarJugador(jugador.getNombre(), jugador.getPuntajeGeneral());
+
+        if(esTablaGeneral){
+            for (Jugador jugador : jugadores) {
+                if (jugador != null) {
+                    agregarJugador(jugador.getNombre(), jugador.getPuntajeGeneral());
+                }
+            }
+        }else{
+            for (Jugador jugador : jugadores) {
+                if (jugador != null) {
+                    agregarJugador(jugador.getNombre(), jugador.getPuntaje());
+                }
             }
         }
+
+
     }
-    public Jugador[] getJugadores() {
-        return jugadores;
-    }
-    public void agregarJugador(int indice, Jugador jugador) {
-        jugadores[indice] = jugador;
-    }
+
     @Override
     public Dimension getPreferredSize() {
         return new Dimension(300, super.getPreferredSize().height);
