@@ -8,14 +8,14 @@ import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
 public class HoraSegunUbicacion extends Thread {
-    private Jugador jugador;
+    private Jugador[] jugadores;
     private CyclicBarrier inicioPartidaBarrier;  // Sincronización del inicio de la partida
     private volatile boolean juegoTerminado = false;
     private JTextArea textArea = null;
     private static final int ACTUALIZACION_HORA_INTERVALO = 1000;
 
-    public HoraSegunUbicacion(Jugador jugador, CyclicBarrier inicioPartidaBarrier) {
-        this.jugador = jugador;
+    public HoraSegunUbicacion(Jugador[] jugadores, CyclicBarrier inicioPartidaBarrier) {
+        this.jugadores = jugadores;
         this.inicioPartidaBarrier = inicioPartidaBarrier;
     }
 
@@ -23,7 +23,7 @@ public class HoraSegunUbicacion extends Thread {
         juegoTerminado = true;
     }
 
-    private String obtenerHora() {
+    private String obtenerHora(Jugador jugador) {
         ZoneId zone = ZoneId.of(jugador.getUbicacion());
         LocalTime romeTime = LocalTime.now(zone);
         return ""+romeTime;
@@ -40,9 +40,11 @@ public class HoraSegunUbicacion extends Thread {
             Thread.currentThread().interrupt();
             return;
         }
-
         while (!juegoTerminado && !Thread.currentThread().isInterrupted()) {
-            textArea.setText(obtenerHora());
+
+            for (Jugador aux: jugadores){
+                aux.getReloj().setText(obtenerHora(aux));
+            }
             try {
                 Thread.sleep(ACTUALIZACION_HORA_INTERVALO);
             } catch (InterruptedException e) {

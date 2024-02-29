@@ -1,11 +1,13 @@
 package vista;
 
+import Logica.HoraSegunUbicacion;
 import Logica.Jugador;
 import controlador.ControladorJugadores;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.concurrent.CyclicBarrier;
 
 public class InfoPanel extends JPanel {
     private JugadorPanel jugador1;
@@ -15,6 +17,7 @@ public class InfoPanel extends JPanel {
     private JugadorPanel jugador5;
     private ControladorJugadores controladorJugadores;
     private ArrayList<JugadorPanel> panels;
+    private HoraSegunUbicacion horaSegunUbicacion;
 
     public InfoPanel(ControladorJugadores controladorJugadores) {
 
@@ -35,6 +38,8 @@ public class InfoPanel extends JPanel {
         this.jugador5 = new JugadorPanel();
         panels.add(jugador5);
         establecerDatosIniciales();
+        horaSegunUbicacion = new HoraSegunUbicacion(controladorJugadores.getJugadores(), new CyclicBarrier(1));
+        horaSegunUbicacion.start();
 
 
         add(jugador1);
@@ -53,7 +58,7 @@ public class InfoPanel extends JPanel {
             panelAux.setNombre(auxJugador.getNombre());
             panelAux.setLanzamiento(String.valueOf(auxJugador.getLanzamientos()), String.valueOf(auxJugador.getPuntaje()), "423");
             panelAux.setHora(auxJugador.getUbicacion());
-            auxJugador.getHiloHora(panelAux.getReloj()).start();
+            auxJugador.setReloj(panelAux.getReloj());
         }
     }
 

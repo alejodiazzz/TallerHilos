@@ -1,9 +1,18 @@
-package Logica;
+package controlador;
+
+import Logica.Jugador;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Random;
 
-public class CalcularPuntajeGeneral {
+public class ControladorPuntaje {
+    public static void calcularPuntaje(Jugador jugador) {
+        int lanzamiento = new Random().nextInt(6) + 1 + new Random().nextInt(6) + 1;
+        int nuevoPuntaje = jugador.getPuntaje() + lanzamiento;
+        jugador.setUltimoLanzamiento(nuevoPuntaje);
+        jugador.setPuntaje(nuevoPuntaje);
+    }
 
     public static void calcularPuntajeGeneral(Jugador[] jugadores) {
         // Ordenar los jugadores por posición final

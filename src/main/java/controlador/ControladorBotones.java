@@ -17,8 +17,7 @@ public class ControladorBotones {
 
     public void configAccionesBotones() {
         ventanaPrincipal.getBotonInfo().addActionListener(e -> {
-//            actualizarjugadores();
-//            mostrarVentanaEmergente();
+            JOptionPane.showMessageDialog(null, "Proyecto desarrollado por:\nJose Salamanca\nAlejandro Diaz");
         });
 
         ventanaPrincipal.getBotonEmpezarPartida().addActionListener(e -> {

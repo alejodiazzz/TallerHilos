@@ -1,5 +1,7 @@
 package Logica;
 
+import controlador.ControladorPuntaje;
+
 import javax.swing.*;
 import java.util.concurrent.CyclicBarrier;
 
@@ -10,10 +12,11 @@ public class Jugador {
     private int numeroPartida;
     private int puntajeGeneral;
     private int puntaje;
+    private int ultimoLanzamiento;
     private int velocidad;
     private volatile boolean juegoTerminado;
     private int lanzamientos;
-    private HoraSegunUbicacion hiloHora;  // Referencia al hilo de HoraSegunUbicacion asociado al jugador
+    private JTextArea reloj;
 
     public Jugador(String nombre, String ubicacion, int velocidad, CyclicBarrier cyclicBarrier) {
         this.nombre = nombre;
@@ -22,11 +25,18 @@ public class Jugador {
         this.puntaje = 0;
         this.velocidad = velocidad;
         this.juegoTerminado = false;
-        this.hiloHora = new HoraSegunUbicacion(this, cyclicBarrier);
         this.lanzamientos = 0;
         this.puntajeGeneral = 0;
+        this.ultimoLanzamiento = 0;
         //realizarLanzamiento();
     }
+
+    public Jugador(String nombre, String ubicacion, int velocidad) {
+        this.nombre = nombre;
+        this.ubicacion = ubicacion;
+        this.velocidad = velocidad;
+    }
+
     public int getLanzamientos() {
         return lanzamientos;
     }
@@ -53,17 +63,17 @@ public class Jugador {
         numeroPartida++;
     }
     public void realizarLanzamiento() {
-        CalcularPuntaje.calcularPuntaje(this);
+        ControladorPuntaje.calcularPuntaje(this);
     }
 
     public int getVelocidad() {
         return velocidad;
     }
 
-    public void detenerJuego() {
-        juegoTerminado = true;
-        detenerHiloHora();
-    }
+//    public void detenerJuego() {
+//        juegoTerminado = true;
+//        detenerHiloHora();
+//    }
 
     public boolean isJuegoTerminado() {
         return juegoTerminado;
@@ -72,26 +82,12 @@ public class Jugador {
     public void setPuntaje(int puntaje) {
         this.puntaje = puntaje;
     }
-
-    // Método para establecer el hilo de HoraSegunUbicacion asociado a este jugador
-    public void setHiloHora(HoraSegunUbicacion hiloHora) {
-        this.hiloHora = hiloHora;
-    }
     public int getPosicion() {
         return posicion;
     }
 
     public void setPosicion(int posicion) {
         this.posicion = posicion;
-    }
-
-    // Método para detener el hilo de HoraSegunUbicacion asociado a este jugador
-    public void detenerHiloHora() {
-        if (hiloHora != null && hiloHora.isAlive()) {
-            hiloHora.detenerJuego();
-            hiloHora.interrupt();
-
-        }
     }
     public void reiniciar() {
         // Reiniciar los datos del jugador para una nueva partida
@@ -113,13 +109,22 @@ public class Jugador {
     public int getPuntajeGeneral() {
         return puntajeGeneral;
     }
-
     public void setPuntajeGeneral(int puntajeGeneral) {
         this.puntajeGeneral = puntajeGeneral;
     }
+    public int getUltimoLanzamiento() {
+        return ultimoLanzamiento;
+    }
 
-    public HoraSegunUbicacion getHiloHora(JTextArea textArea) {
-        hiloHora.setTextArea(textArea);
-        return hiloHora;
+    public void setUltimoLanzamiento(int ultimoLanzamiento) {
+        this.ultimoLanzamiento = ultimoLanzamiento;
+    }
+
+    public JTextArea getReloj() {
+        return reloj;
+    }
+
+    public void setReloj(JTextArea reloj) {
+        this.reloj = reloj;
     }
 }

@@ -94,7 +94,7 @@ public class VentanaPrincipal extends JFrame {
 
     public void inicializarBotones(){
         //Boton que va a llevar a la seccion de informacion de los jugadores
-        this.botonInfo = new JButton("Jugadores");
+        this.botonInfo = new JButton("Integrantes");
         botonInfo.setBackground(new Color(51,153,255));
 
         //Boton que va a iniciar la simulacion
