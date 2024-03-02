@@ -1,7 +1,9 @@
 package Logica;
 
 
-import java.util.concurrent.CyclicBarrier;
+//import controlador.ControladorPuntaje;
+//
+//import java.util.concurrent.CyclicBarrier;
 
 public class Main {
 //    public static void main(String[] args) {
@@ -29,8 +31,8 @@ public class Main {
 //
 //            for (int i = 0; i < jugadores.length; i++) {
 //                jugadores[i].reiniciar(); // Reiniciar datos del jugador para una nueva partida
-//                hilosPartida[i] = new Partida(jugadores[i], inicioPartidaBarrier);
-//                hilosHora[i] = new HoraSegunUbicacion(jugadores[i], inicioPartidaBarrier);
+//                //hilosPartida[i] = new Partida(jugadores[i], inicioPartidaBarrier);
+//                //hilosHora[i] = new HoraSegunUbicacion(jugadores[i], inicioPartidaBarrier);
 //            }
 //
 //            // Iniciar hilos de Partida y HoraSegunUbicacion
@@ -56,7 +58,7 @@ public class Main {
 //            // Visualizar la clasificación al final
 //            CalcularPosicion calculadorPosicion = new CalcularPosicion();
 //            calculadorPosicion.ordenarJugadoresPorPuntajeYPartida(jugadores);
-//            CalcularPuntajeGeneral.calcularPuntajeGeneral(jugadores);
+//            //ControladorPuntaje.calcularPuntajeGeneral(jugadores);
 //            System.out.println("\nClasificación Final:");
 //            for (Jugador jugador : jugadores) {
 //                System.out.println("Posición: " + jugador.getPosicion() + ". Jugador: " + jugador.getNombre() +

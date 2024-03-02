@@ -2,24 +2,32 @@ package controlador;
 
 import Logica.Configuracion;
 import Logica.Jugador;
+import Logica.Partida;
 import vista.ClasificacionPanel;
 import vista.InfoPanel;
 import vista.SimulacionPanel;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.concurrent.CyclicBarrier;
 
 public class ControladorJugadores {
     private Configuracion configuracion;
     private ClasificacionPanel clasificacionGeneral, clasificacionPartida;
+    private ControladorPuntaje controladorPuntaje;
+    private Partida partida;
     private InfoPanel infoPanel;
     private SimulacionPanel simulacionPanel;
     private Jugador[] jugadores;
+    private int hilosTerminados = 0;
     public ControladorJugadores(){
         traerJugadores();
-        clasificacionGeneral = new ClasificacionPanel(this, true);
-        clasificacionPartida = new ClasificacionPanel(this, false);
-        infoPanel = new InfoPanel(this);
-        simulacionPanel = new SimulacionPanel(this);
+        this.clasificacionGeneral = new ClasificacionPanel(this, true);
+        this.clasificacionPartida = new ClasificacionPanel(this, false);
+        this.infoPanel = new InfoPanel(this);
+        this.simulacionPanel = new SimulacionPanel(this);
+        this.controladorPuntaje = new ControladorPuntaje(this);
     }
     private void traerJugadores(){
         // Crear jugadores
@@ -29,11 +37,27 @@ public class ControladorJugadores {
         for (int i = 0; i < jugadores.length; i++) {
             String name = configuracion.obtenerValor("jugador" + (i + 1) + ".nombre");
             String ubicacion = configuracion.obtenerValor("jugador" + (i + 1) + ".ubicacion");
-            int velocidad = Integer.parseInt(configuracion.obtenerValor("jugador" + (i + 1) + ".velocidad"));
 
             CyclicBarrier inicioPartidoBarrier = new CyclicBarrier(1);
 
-            jugadores[i] = new Jugador(name, ubicacion, velocidad, inicioPartidoBarrier);
+            jugadores[i] = new Jugador(name, ubicacion, inicioPartidoBarrier);
+        }
+    }
+
+    public void comenzarPartidaJugadores() {
+
+        controladorPuntaje.calcularPuntajeGeneral();
+
+        if(!controladorPuntaje.getPosiciones().isEmpty()){
+            controladorPuntaje.getPosiciones().forEach(jugador -> System.out.println("Nombre "+ jugador.getNombre()+" EL puntaje es: " + jugador.getPuntajeGeneral()));
+        }
+        Jugador[] auxJugadores = jugadores;
+        Arrays.sort(auxJugadores, Comparator.comparing(Jugador::getPuntajeGeneral).reversed());
+        clasificacionGeneral.actualizarTabla(auxJugadores, true);
+        for (Jugador jugador : jugadores) {
+            jugador.reiniciar();
+            this.partida = new Partida(jugador, jugador.getCyclicBarrier(), infoPanel.getPanelReferencias().get(jugador.getNombre()), this);
+            partida.start();
         }
     }
 
@@ -83,5 +107,21 @@ public class ControladorJugadores {
 
     public void setClasificacionPartida(ClasificacionPanel clasificacionPartida) {
         this.clasificacionPartida = clasificacionPartida;
+    }
+
+    public void setHilosTerminados() {
+        this.hilosTerminados++;
+    }
+
+    public int getHilosTerminados() {
+        return hilosTerminados;
+    }
+
+    public ControladorPuntaje getControladorPuntaje() {
+        return controladorPuntaje;
+    }
+
+    public void setControladorPuntaje(ControladorPuntaje controladorPuntaje) {
+        this.controladorPuntaje = controladorPuntaje;
     }
 }

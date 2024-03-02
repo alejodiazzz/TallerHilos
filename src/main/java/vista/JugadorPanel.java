@@ -6,22 +6,28 @@ import java.awt.*;
 
 public class JugadorPanel extends JPanel {
 
-    private JLabel nombre, lanzamiento, hora, faltantes;
+    private JLabel nombre, lanzamiento, hora, faltantes, puntajeLanzamiento;
     private JTextArea reloj;
 
     public JugadorPanel(){
         setPreferredSize(new Dimension(280, 121));
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setBorder(BorderFactory.createLineBorder(Color.WHITE,1));
 
         this.nombre = new JLabel();
         this.nombre.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(nombre, BorderLayout.NORTH);
 
         this.lanzamiento = new JLabel();
+        this.puntajeLanzamiento = new JLabel();
         this.faltantes = new JLabel();
+
         this.lanzamiento.setAlignmentX(Component.CENTER_ALIGNMENT);
         this.faltantes.setAlignmentX(Component.CENTER_ALIGNMENT);
+        this.puntajeLanzamiento.setAlignmentX(Component.CENTER_ALIGNMENT);
+
         add(lanzamiento, BorderLayout.SOUTH);
+        add(puntajeLanzamiento, BorderLayout.SOUTH);
         add(faltantes, BorderLayout.SOUTH);
 
         this.reloj = new JTextArea();
@@ -53,6 +59,10 @@ public class JugadorPanel extends JPanel {
         this.faltantes.setText("Faltan: " + faltan);
     }
 
+    public void setUltimoLanzamiento(String puntaje){
+        this.puntajeLanzamiento.setText("Ultimos dados lanzados: " + puntaje);
+    }
+
     public JTextArea getReloj() {
         return reloj;
     }
@@ -68,4 +78,5 @@ public class JugadorPanel extends JPanel {
     public void setHora(String zona) {
         this.hora.setText("Zona: " + zona);
     }
+
 }

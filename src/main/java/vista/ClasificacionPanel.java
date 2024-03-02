@@ -5,6 +5,7 @@ import controlador.ControladorJugadores;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.util.Vector;
 
@@ -22,12 +23,16 @@ public class ClasificacionPanel extends JPanel {
         setLayout(new BorderLayout());
 
         // Crear el modelo de la tabla con las columnas
-        String[] columnNames = {"Nombre", "Puntaje"};
+        String[] columnNames = {"Posicion","Nombre", "Puntaje"};
         tableModel = new DefaultTableModel(columnNames, 0);
 
         // Crear la tabla con el modelo
         table = new JTable(tableModel);
         table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+
+        table.getColumnModel().getColumn(0).setMaxWidth(50);
+        table.getColumnModel().getColumn(0).setMinWidth(50);
+        table.getColumnModel().getColumn(0).setPreferredWidth(50);
 
         // Configurar apariencia de la tabla
         table.setRowHeight(30);
@@ -40,28 +45,32 @@ public class ClasificacionPanel extends JPanel {
         add(table, BorderLayout.CENTER);
 
         //Precarga los datos de las dos tablas
-        actualizarTabla(controladorJugadores.getJugadores());
+        actualizarTabla(controladorJugadores.getJugadores(), true);
+        actualizarTabla(controladorJugadores.getJugadores(), false);
     }
-    private void agregarJugador(String nombre, int puntaje) {
+    private void agregarJugador(String  posicion, String nombre, int puntaje) {
         Vector<Object> row = new Vector<>();
+        row.add(posicion);
         row.add(nombre);
         row.add(puntaje);
         tableModel.addRow(row);
     }
 
-    public void actualizarTabla(Jugador[] jugadores) {
+    public void actualizarTabla(Jugador[] jugadores, boolean esTablaGeneral) {
         tableModel.setRowCount(0);
 
         if(esTablaGeneral){
-            for (Jugador jugador : jugadores) {
+            for (int i = 0; i < jugadores.length; i++) {
+                Jugador jugador = jugadores[i];
                 if (jugador != null) {
-                    agregarJugador(jugador.getNombre(), jugador.getPuntajeGeneral());
+                    agregarJugador(""+(i + 1), jugador.getNombre(), jugador.getPuntajeGeneral());
                 }
             }
         }else{
-            for (Jugador jugador : jugadores) {
+            for (int i = 0; i < jugadores.length; i++) {
+                Jugador jugador = jugadores[i];
                 if (jugador != null) {
-                    agregarJugador(jugador.getNombre(), jugador.getPuntaje());
+                    agregarJugador(""+(i+1), jugador.getNombre(), jugador.getPuntaje());
                 }
             }
         }

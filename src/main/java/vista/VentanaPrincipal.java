@@ -24,7 +24,7 @@ public class VentanaPrincipal extends JFrame {
         inicializarBotones();
         inicializarLabels();
         configPaneles();
-        this.controladorBotones = new ControladorBotones(this);
+        this.controladorBotones = new ControladorBotones(this, controladorJugadores);
     }
 
     public void configPaneles(){
