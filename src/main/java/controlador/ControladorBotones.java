@@ -24,6 +24,7 @@ public class ControladorBotones {
 
         ventanaPrincipal.getBotonEmpezarPartida().addActionListener(e -> {
             controladorJugadores.comenzarPartidaJugadores();
+
         });
     }
 }

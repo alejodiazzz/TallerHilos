@@ -1,12 +1,14 @@
 package vista;
 
 import Logica.Jugador;
+import Logica.MoverCarros;
 import controlador.ControladorJugadores;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Vector;
 
 public class ClasificacionPanel extends JPanel {
@@ -14,6 +16,8 @@ public class ClasificacionPanel extends JPanel {
     private JTable table;
     private ControladorJugadores controladorJugadores;
     private boolean esTablaGeneral;
+    private int puntaje;
+    private ArrayList<CarreraPanel> panels;
 
     public ClasificacionPanel(ControladorJugadores controladorJugadores, boolean esGeneral) {
 
@@ -69,8 +73,15 @@ public class ClasificacionPanel extends JPanel {
         }else{
             for (int i = 0; i < jugadores.length; i++) {
                 Jugador jugador = jugadores[i];
+
                 if (jugador != null) {
+
                     agregarJugador(""+(i+1), jugador.getNombre(), jugador.getPuntaje());
+                    if (jugador.getPuntaje() > 99) {
+
+                            panels.get(i).visible();
+
+                    }
                 }
             }
         }
@@ -78,8 +89,16 @@ public class ClasificacionPanel extends JPanel {
 
     }
 
+
+
+    
+
     @Override
     public Dimension getPreferredSize() {
         return new Dimension(300, super.getPreferredSize().height);
+    }
+
+    public void actualizar(ArrayList<CarreraPanel> panels1) {
+        this.panels = panels1;
     }
 }

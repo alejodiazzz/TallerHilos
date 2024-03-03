@@ -67,6 +67,7 @@ public class Partida extends Thread {
 
             if (jugador.getPuntaje() >= META) {
                 jugador.setJuegoTerminado(true); // Detener el juego si el puntaje supera META
+
                 break;
             }
         }

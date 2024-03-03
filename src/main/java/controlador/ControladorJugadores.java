@@ -45,7 +45,7 @@ public class ControladorJugadores {
     }
 
     public void comenzarPartidaJugadores() {
-
+        simulacionPanel.establecerPosicion();
         controladorPuntaje.calcularPuntajeGeneral();
 
         if(!controladorPuntaje.getPosiciones().isEmpty()){
@@ -60,6 +60,7 @@ public class ControladorJugadores {
             partida.start();
         }
     }
+
 
     public Jugador[] getJugadores() {
         return jugadores;
