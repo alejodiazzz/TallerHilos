@@ -24,7 +24,7 @@ public class SimulacionPanel extends Panel {
         this.panels = new ArrayList<>();
         setPreferredSize(new Dimension(700, 680));
         setBackground(new Color(204, 255, 229));
-        setLayout(new GridLayout(5,1));
+        setLayout(new GridLayout(4,1));
         this.partida = new JLabel();
         this.partida.setSize(100,100);
         add(partida,BorderLayout.SOUTH);
@@ -47,7 +47,7 @@ public class SimulacionPanel extends Panel {
         ArrayList<CarreraPanel> panels1 = panels;
         clasificacionPanel.actualizar(panels1);
         add(clasificacionPanel, BorderLayout.SOUTH);
-        partida.setVisible(false);
+    
 
         add(partida,BorderLayout.SOUTH);
         partida.setVisible(false);
