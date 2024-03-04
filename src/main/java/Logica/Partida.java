@@ -43,6 +43,7 @@ public class Partida extends Thread {
             e.printStackTrace();
             return;
         }
+        jugador.setInGame(true);
 
         while (jugador.getPuntaje() < META && !jugador.isJuegoTerminado()) {
 
@@ -71,6 +72,7 @@ public class Partida extends Thread {
                 break;
             }
         }
+        jugador.setInGame(false);
     }
     public AtomicBoolean getPartidaTerminada() {
         return partidaTerminada;

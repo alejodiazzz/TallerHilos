@@ -23,8 +23,17 @@ public class ControladorBotones {
         });
 
         ventanaPrincipal.getBotonEmpezarPartida().addActionListener(e -> {
-            controladorJugadores.comenzarPartidaJugadores();
-
+            boolean todosFueraDelJuego = true;
+            for (Jugador jugador : controladorJugadores.getJugadores()) {
+                if (jugador.isInGame()) {
+                    todosFueraDelJuego = false;
+                    break;
+                }
+            }
+            if (todosFueraDelJuego) {
+                System.out.println("djsiajdklsad");
+                controladorJugadores.comenzarPartidaJugadores();
+            }
         });
     }
 }

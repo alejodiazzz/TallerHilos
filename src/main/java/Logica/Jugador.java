@@ -16,6 +16,7 @@ public class Jugador {
     private int lanzamientos;
     private CyclicBarrier cyclicBarrier;
     private JTextArea reloj;
+    private boolean inGame;
 
     public Jugador(String nombre, String ubicacion, CyclicBarrier cyclicBarrier) {
         this.nombre = nombre;
@@ -28,6 +29,7 @@ public class Jugador {
         this.ultimoLanzamiento = 0;
         this.puntajeRestante = 0;
         this.cyclicBarrier = cyclicBarrier;
+        this.inGame = false;
     }
 
     public Jugador(String nombre, String ubicacion) {
@@ -135,5 +137,13 @@ public class Jugador {
 
     public void setJuegoTerminado(boolean juegoTerminado) {
         this.juegoTerminado = juegoTerminado;
+    }
+
+    public boolean isInGame() {
+        return inGame;
+    }
+
+    public void setInGame(boolean inGame) {
+        this.inGame = inGame;
     }
 }
