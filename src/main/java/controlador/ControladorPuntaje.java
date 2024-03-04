@@ -20,12 +20,8 @@ public class ControladorPuntaje {
         int lanzamiento = new Random().nextInt(6) + 1 + new Random().nextInt(6) + 1;
         int nuevoPuntaje = jugador.getPuntaje() + lanzamiento;
         jugador.setUltimoLanzamiento(lanzamiento);
-        System.out.println("jugador paso: "+ jugador.getNombre() + " su puntaje es: "+ nuevoPuntaje);
 
         if( nuevoPuntaje >=100){
-            System.out.println(
-                    "entro "+jugador.getNombre()
-            );
             posiciones.add(jugador);
             jugador.setPuntaje(100);
         }else{
@@ -36,10 +32,6 @@ public class ControladorPuntaje {
     public void calcularPuntajeGeneral() {
         if(posiciones.isEmpty()){return;}
         asignarPosiciones();
-        System.out.println("Posiciones");
-        for (Jugador ju: posiciones){
-            System.out.println(ju.getNombre());
-        }
         // Ordenar los jugadores por posición final
         Arrays.sort(controladorJugadores.getJugadores(), Comparator.comparingInt(Jugador::getPosicion));
         for (int i = 0; i < posiciones.size(); i++) {

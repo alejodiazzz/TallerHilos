@@ -23,7 +23,7 @@ public class SimulacionPanel extends Panel {
         this.jugadores = controladorJugadores.getJugadores();
         this.panels = new ArrayList<>();
         setPreferredSize(new Dimension(700, 680));
-        setBackground(new Color(204, 255, 229));
+        setBackground(new Color(204,204,204));
         setLayout(new GridLayout(4,1));
         this.partida = new JLabel();
         this.partida.setSize(100,100);

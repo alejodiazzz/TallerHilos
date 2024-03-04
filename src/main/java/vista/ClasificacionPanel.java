@@ -77,7 +77,7 @@ public class ClasificacionPanel extends JPanel {
                 if (jugador != null) {
 
                     agregarJugador(""+(i+1), jugador.getNombre(), jugador.getPuntaje());
-                    if (jugador.getPuntaje() > 99) {
+                    if (jugador.getPuntaje() > 99 && i<panels.size()) {
 
                             panels.get(i).visible();
 

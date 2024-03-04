@@ -27,11 +27,11 @@ public class ControladorBotones {
             for (Jugador jugador : controladorJugadores.getJugadores()) {
                 if (jugador.isInGame()) {
                     todosFueraDelJuego = false;
+                    JOptionPane.showMessageDialog(null, "Partida en curso, espera que termine y vuelve intentarlo");
                     break;
                 }
             }
             if (todosFueraDelJuego) {
-                System.out.println("djsiajdklsad");
                 controladorJugadores.comenzarPartidaJugadores();
             }
         });

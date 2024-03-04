@@ -66,7 +66,7 @@ public class VentanaPrincipal extends JFrame {
         //Panel simulador juego
         this.panelSimulacionJuego = new JPanel();
         panelSimulacionJuego.setLayout(new BoxLayout(panelSimulacionJuego, BoxLayout.X_AXIS));
-        panelSimulacionJuego.setBackground( new Color(204, 255, 229));
+        panelSimulacionJuego.setBackground( new Color(56, 65, 60));
 
         //Agrego la configuracion de la simulacion
         //this.simulacionPanel = new SimulacionPanel();
@@ -171,59 +171,6 @@ public class VentanaPrincipal extends JFrame {
         this.nPartida = nPartida;
     }
 
-//    public void iniciarSimulacion(Jugador[] jugadores) {
-//
-//        clasificacionPanel.traerjugadores(jugadores);
-//       // Repetir la partida 5 veces
-//        for (int repeticion = 1; repeticion <= 5; repeticion++) {
-//            System.out.println("Repetición " + repeticion);
-//
-//            // Crear e iniciar hilos de Partida y HoraSegunUbicacion para cada jugador
-//            CyclicBarrier inicioPartidaBarrier = new CyclicBarrier(jugadores.length);
-//            Thread[] hilosPartida = new Thread[jugadores.length];
-//            Thread[] hilosHora = new Thread[jugadores.length];
-//
-//            for (int i = 0; i < jugadores.length; i++) {
-//                jugadores[i].reiniciar(); // Reiniciar datos del jugador para una nueva partida
-//                hilosPartida[i] = new Partida(jugadores[i], inicioPartidaBarrier);
-//                hilosHora[i] = new HoraSegunUbicacion(jugadores[i], inicioPartidaBarrier);
-//            }
-//
-//            // Iniciar hilos de Partida y HoraSegunUbicacion
-//            for (int i = 0; i < jugadores.length; i++) {
-//                hilosPartida[i].start();
-//                hilosHora[i].start();
-//            }
-//
-//            // Esperar a que ambos hilos terminen
-//            try {
-//                for (Thread hiloPartida : hilosPartida) {
-//                    hiloPartida.join();
-//                }
-//
-//                // Detener los hilos de HoraSegunUbicacion después de las partidas
-//                for (Thread hiloHora : hilosHora) {
-//                    hiloHora.interrupt();
-//                }
-//            } catch (InterruptedException e) {
-//                System.err.println("Error al esperar a que los hilos de partida terminen: " + e.getMessage());
-//            }
-//
-//            // Visualizar la clasificación al final
-//            CalcularPosicion calculadorPosicion = new CalcularPosicion();
-//            calculadorPosicion.ordenarJugadoresPorPuntajeYPartida(jugadores);
-//            CalcularPuntajeGeneral.calcularPuntajeGeneral(jugadores);
-//            clasificacionPanel.actualizarTabla();
-//            System.out.println("\nClasificación Final:");
-//            for (Jugador jugador : jugadores) {
-//                System.out.println("Posición: " + jugador.getPosicion() + ". Jugador: " + jugador.getNombre() +
-//                        " - Partidas: " + jugador.getNumeroPartida() + " - Lanzamientos: " + jugador.getLanzamientos());
-//            }
-//        }
-//
-//        // También realizar otras actualizaciones en la interfaz según sea necesario.
-//        // Por ejemplo, mostrar mensajes, actualizar etiquetas, etc.
-//    }
     public ClasificacionPanel getClasificacionPanel() {
         return clasificacionPanel;
     }
