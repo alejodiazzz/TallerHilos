@@ -30,7 +30,7 @@ public class VentanaPrincipal extends JFrame {
     public void configPaneles(){
         setTitle("Juego");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1280, 720);
+        setSize(1300, 750);
 
         //Panel principal
         this.panelPrincipal = new JPanel();
@@ -77,10 +77,11 @@ public class VentanaPrincipal extends JFrame {
         //this.infoPanel = new InfoPanel();
         this.infoPanel = controladorJugadores.getInfoPanel();
         panelSimulacionJuego.add(infoPanel);
-
+        
+        JScrollPane scroll = new JScrollPane(panelSimulacionJuego);
         //Agragar al panel de juego
         panelJuego.add(panelTablaGeneral, BorderLayout.WEST);
-        panelJuego.add(panelSimulacionJuego, BorderLayout.CENTER);
+        panelJuego.add(scroll, BorderLayout.CENTER);
 
         //Agregar al panel principal
         panelPrincipal.add(panelCabecera, BorderLayout.NORTH);
